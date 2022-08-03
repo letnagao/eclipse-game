@@ -6,23 +6,23 @@ cnv.height = innerHeight
 
 const ctx = cnv.getContext('2d')
 
-const player = new Player(cnv.width/2, cnv.height/2, 30, '#48FCFF')
+const player = new Player(cnv.width / 2, cnv.height / 2, 30, '#48FCFF')
 
 let projectiles = []
 const shootingSpeed = 4
 
-cnv.addEventListener('click', (e)=>{
+cnv.addEventListener('click', (e) => {
     e.preventDefault()
-    const angle = Math.atan2(e.clientY - player.y,e.clientX - player.x)
+    const angle = Math.atan2(e.clientY - player.y, e.clientX - player.x)
     const velocity = {
         x: Math.cos(angle) * shootingSpeed,
         y: Math.sin(angle) * shootingSpeed
     }
-    projectiles.push(new Projectile(player.x,player.y,3,'#48FCFF',velocity))
+    projectiles.push(new Projectile(player.x, player.y, 3, '#48FCFF', velocity))
 })
 
 function loop() {
-    requestAnimationFrame(loop,cnv)
+    requestAnimationFrame(loop, cnv)
     update()
 }
 
@@ -35,9 +35,20 @@ function update() {
 }
 
 function checkProjectiles() {
-    for(let i = projectiles.length - 1; i >= 0; i--) {
+    for (let i = projectiles.length - 1; i >= 0; i--) {
         const p = projectiles[i]
         p.update()
+        checkOffScreen(p,i)
+    }
+}
+
+function checkOffScreen(projectile, index) {
+    if (projectile.x + projectile.radius < 0 ||
+        projectile.x - projectile.radius > cnv.width ||
+        projectile.y + projectile.radius < 0 ||
+        projectile.y - projectile.radius > cnv.height) 
+    {
+        projectile.splice(index, 1)
     }
 }
 
