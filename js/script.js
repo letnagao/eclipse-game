@@ -64,6 +64,11 @@ function update() {
 function checkEnemies() {
     enemies.forEach((enemy) => {
         enemy.update()
+
+        const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y)
+        if(distance < player.radius + enemy.radius) {
+            alert('Game Over')
+        }
     }) 
 }
 
@@ -72,6 +77,15 @@ function checkProjectiles() {
         const p = projectiles[i]
         p.update()
         checkOffScreen(p,i)
+
+        for(let eIndex = enemies.length - 1; eIndex >= 0; eIndex--) {
+            const enemy = enemies[eIndex]
+            const distance = Math.hypot(p.x - enemy.x, p.y - enemy.y)
+            if(distance < p.radius + enemy.radius) {
+                enemies.splice(eIndex,1)
+                projectiles.splice(i,1)
+            }
+        }
     }
 }
 
