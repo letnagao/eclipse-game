@@ -9,6 +9,7 @@ const shootingSpeed = 4
 
 let projectiles = []
 let enemies = []
+let particles = []
 let intervalID 
 
 function spawnEnemies() {
@@ -58,6 +59,7 @@ function update() {
 
     checkEnemies()
     checkProjectiles()
+    checkParticles()
     player.update()
 }
 
@@ -81,9 +83,12 @@ function checkProjectiles() {
         for(let eIndex = enemies.length - 1; eIndex >= 0; eIndex--) {
             const enemy = enemies[eIndex]
             const distance = Math.hypot(p.x - enemy.x, p.y - enemy.y)
+
+
             if(distance < p.radius + enemy.radius) {
                 enemies.splice(eIndex,1)
                 projectiles.splice(i,1)
+                createParticles(enemy,p)
             }
         }
     }
@@ -95,7 +100,27 @@ function checkOffScreen(projectile, index) {
         projectile.y + projectile.radius < 0 ||
         projectile.y - projectile.radius > cnv.height) 
     {
-        projectile.splice(index, 1)
+        projectiles.splice(index, 1)
+    }
+}
+
+function createParticles(enemy,projectile) {
+    for(let i = 0; i < enemy.radius * 2; i++) {
+        const velocity = {
+            x: (Math.random() - .5) * (Math.random() * 6),
+            y: (Math.random() - .5) * (Math.random() * 6)
+        }
+        particles.push(new Particle(projectile.x,projectile.y,Math.random()*2,enemy.color,velocity))
+    }
+}
+
+function checkParticles() {
+    for(let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i]
+        p.update()
+        if(p.alpha <= 0) {
+            particles.splice(i,1)
+        }
     }
 }
 
