@@ -86,7 +86,11 @@ function checkProjectiles() {
 
 
             if(distance < p.radius + enemy.radius) {
-                enemies.splice(eIndex,1)
+                if(enemy.radius > 15) {
+                    enemy.newRadius = enemy.radius -10
+                } else {
+                    enemies.splice(eIndex,1)
+                }
                 projectiles.splice(i,1)
                 createParticles(enemy,p)
             }

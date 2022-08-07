@@ -85,6 +85,7 @@ class Player extends Sprite {
 class Enemy extends Projectile {
     constructor(x,y,radius,color,velocity) {
         super(x,y,radius,color,velocity) 
+        this.newRadius = radius
     }
 
     draw() {
@@ -92,6 +93,19 @@ class Enemy extends Projectile {
         ctx.arc(this.x,this.y,this.radius,0,Math.PI*2,false)
         ctx.strokeStyle = this.color
         ctx.stroke()
+    }
+
+    shrink() {
+        if(this.newRadius < this.radius) {
+            this.radius -= .5
+        }
+    }
+
+    update() {
+        this.shrink()
+        this.draw()
+        this.x += this.velocity.x
+        this.y += this.velocity.y
     }
 }
 
