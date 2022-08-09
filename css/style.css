@@ -5,17 +5,15 @@
     display: block;
 }
 
-.p img {
-    display: flex;
-    background-image: './img/image1.svg';
-    justify-content: center;
-    align-items: center;
+body {
+    font-family: sans-serif;
+    cursor: crosshair;
 }
 
-.input {
-    display: flex;
-    border-radius: 5rem;
-    color: black;
-    background-color: white;
-    align-items: center;
+#txtScore {
+    position: absolute;
+    font-weight: bold;
+    text-shadow: 0 0 8px #48fcff;
+    user-select: none;
+    padding: 8px;
 }
