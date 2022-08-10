@@ -7,11 +7,17 @@ const ctx = cnv.getContext('2d')
 const player = new Player(cnv.width / 2, cnv.height / 2, 30, '#48FCFF')
 const shootingSpeed = 4
 const txtScore = $('#txtScore')
+const gameOverModal = $('#gameOverModal')
+const gameOverScore = $('#gameOverScore')
+const btnNewGame = $('#btnNewGame')
+const startModal = $('#startModal')
+const startContainer = $('#startContainer')
 
 let projectiles = []
 let enemies = []
 let particles = []
 let intervalID 
+let animationID 
 let score = 0
 
 function spawnEnemies() {
@@ -50,15 +56,26 @@ cnv.addEventListener('click', (e) => {
     projectiles.push(new Projectile(player.x, player.y, 3, '#48FCFF', velocity))
 })
 
+startContainer.addEventListener('click',() => {
+    startModal.style.opacity = 0
+    
+    setTimeout(() => {
+        startModal.style.zIndex = -1
+    },500)
+
+    newGame()
+})
+
+btnNewGame.addEventListener('click', newGame)
+
 function loop() {
-    requestAnimationFrame(loop, cnv)
+    animationID = requestAnimationFrame(loop,cnv)
     update()
 }
 
 function update() {
     ctx.fillStyle = 'rgba(0, 0, 0, .1)'
-    ctx.fillRect(0, 0, cnv.width, cnv.height)
-
+    ctx.fillRect(0,0,cnv.width,cnv.height)
     checkEnemies()
     checkProjectiles()
     checkParticles()
@@ -71,9 +88,31 @@ function checkEnemies() {
 
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y)
         if(distance < player.radius + enemy.radius) {
-            alert('Game Over')
+            gameOver()
         }
     }) 
+}
+
+function gameOver() {
+    cancelAnimationFrame(animationID)
+    clearInterval(intervalID)
+    gameOverScore.innerText = score
+    gameOverModal.style.opacity = 1
+    gameOverModal.style.zIndex = 1
+}
+
+function newGame() {
+    gameOverModal.style.opacity = 0
+    gameOverModal.style.zIndex = -1
+    projectiles = []
+    particles = []
+    enemies = []
+    score = 0
+    txtScore.innerText = 'SCORE: ' + score
+    loop()
+    spawnEnemies()
+    ctx.fillStyle = 'white'
+    ctx.fillRect(0,0,cnv.width,cnv.height)
 }
 
 function checkProjectiles() {
@@ -140,6 +179,3 @@ function checkParticles() {
         }
     }
 }
-
-loop()
-spawnEnemies()
