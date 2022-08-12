@@ -12,6 +12,10 @@ const gameOverScore = $('#gameOverScore')
 const btnNewGame = $('#btnNewGame')
 const startModal = $('#startModal')
 const startContainer = $('#startContainer')
+const musicGame = $('#musicGame')
+    musicGame.volume = .2
+const EXPLOSION = 1
+const SHOOTING = 2
 
 let projectiles = []
 let enemies = []
@@ -48,6 +52,7 @@ function spawnEnemies() {
 
 cnv.addEventListener('click', (e) => {
     e.preventDefault()
+    playSound(SHOOTING)
     const angle = Math.atan2(e.clientY - player.y, e.clientX - player.x)
     const velocity = {
         x: Math.cos(angle) * shootingSpeed,
@@ -94,6 +99,8 @@ function checkEnemies() {
 }
 
 function gameOver() {
+    musicGame.pause()
+    musicGame.currentTime = 0
     cancelAnimationFrame(animationID)
     clearInterval(intervalID)
     gameOverScore.innerText = score
@@ -102,6 +109,7 @@ function gameOver() {
 }
 
 function newGame() {
+    musicGame.play()
     gameOverModal.style.opacity = 0
     gameOverModal.style.zIndex = -1
     projectiles = []
@@ -113,6 +121,14 @@ function newGame() {
     spawnEnemies()
     ctx.fillStyle = 'white'
     ctx.fillRect(0,0,cnv.width,cnv.height)
+}
+
+function playSound(soundType) {
+    const sound = document.createElement('audio')
+    sound.src = soundType === EXPLOSION ? './snd/explosion.ogg' : './snd/shooting.mp3'
+    sound.addEventListener('canplaythrough', () => {
+        sound.play()
+    })
 }
 
 function checkProjectiles() {
@@ -127,6 +143,7 @@ function checkProjectiles() {
 
 
             if(distance < p.radius + enemy.radius) {
+                playSound(EXPLOSION)
                 if(enemy.radius > 15) {
                     enemy.newRadius = enemy.radius -10
                 } else {
