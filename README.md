@@ -10,14 +10,15 @@ Sci-Fi Shooter with only Vanilla JS, HTML and CSS.
 [![GitHub watchers](https://img.shields.io/github/watchers/letnagao/eclipse-game?logo=GitHub)](https://github.com/letnagao/eclipse-game/watchers)
 ![Maintained](https://img.shields.io/maintenance/yes/9999)
 
-## App preview ⚡️
-
-[![Demo](screenshots/thumbnail.png)](https://user-images.githubusercontent.com/99754900/184277043-6ce288b3-5d92-4698-ac1c-9f59b3e50a3f.mp4)
-
+</ul><h2> Preview ⚡️</h2>
+<table align="center">
+  <tr>
+    <td><video src="https://user-images.githubusercontent.com/99754900/184277043-6ce288b3-5d92-4698-ac1c-9f59b3e50a3f.mp4" width=1280 height=800></td>
+  </tr>
+</table>
 
 ## Features 🔥
 ✔️ Pure JS language, no libraries or frameworks <br />
-
 
 ## Usage 📋
 <details open>
